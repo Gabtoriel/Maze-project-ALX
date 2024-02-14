@@ -22,6 +22,7 @@ int main(void)
 		/*
 		   Draw some stuff here
 		*/
+		draw_RayCaster(&instance);
 		SDL_RenderPresent(instance.renderer);
 	}
 	SDL_DestroyRenderer(instance.renderer);

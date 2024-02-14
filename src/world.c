@@ -5,9 +5,9 @@
  * Resources: https://permadi.com/1996/05/ray-casting-tutorial-table-of-contents/
  * return: void
  */
-void draw_RayCaster(SDL_Instance instance)
+void draw_RayCaster(SDL_Instance * instance)
 {
-	int world_map[MAP_WIDTH][MAP_HEIGTH]=
+	int world_map[MAP_HEIGHT][MAP_WIDTH]=
 	{
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -21,7 +21,7 @@ void draw_RayCaster(SDL_Instance instance)
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
   		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 		{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -35,6 +35,18 @@ void draw_RayCaster(SDL_Instance instance)
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
-	int posX = 96;
-	int posY = 160;
-	int 
+	//Program constants
+	int TILE_SIZE = 20
+	int FOV = (int)(M_PI / 3);
+	int HALF_FOV = FOV - 30;
+	float ANGLE_BETWEEN_SUB_COL = FOV / SCREEN_WIDTH;
+
+	// Program variables.
+	int posX = 240;
+	int posY = 240;
+	
+	for (float i = 0; (int)i < FOV; i += ANGLE_BETWEEN_SUB_COL)
+	{
+
+
+}
