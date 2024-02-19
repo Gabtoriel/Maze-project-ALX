@@ -1,32 +1,97 @@
-#include "../dependencies/maze.h"
+#include "../dependencies/header.h"
+
+bool GameRunning = false;
+int TicksLastFrame;
+player_t player;
 
 /**
- * main - start of the program
+ * setup_game - initialize player variables and load wall textures
  *
- * return: (0) successful (1) failed
- */
+*/
+
+void setup_game(void)
+{
+
+	player.x = SCREEN_WIDTH / 2;
+	player.y = SCREEN_HEIGHT / 2;
+	player.width = 1;
+	player.height = 30;
+	player.walkDirection = 0;
+	player.walkSpeed = 100;
+	player.turnDirection = 0;
+	player.turnSpeed = 45 * (PI / 180);
+	player.rotationAngle = PI / 2;
+	WallTexturesready();
+}
+
+
+/**
+ * update_game - update_game delta time, the ticks last frame
+ *          the player movement and the ray casting
+ *
+*/
+void update_game(void)
+{
+	float DeltaTime;
+	int timeToWait = FRAME_TIME_LENGTH - (SDL_GetTicks() - TicksLastFrame);
+
+	if (timeToWait > 0 && timeToWait <= FRAME_TIME_LENGTH)
+	{
+		SDL_Delay(timeToWait);
+	}
+	DeltaTime = (SDL_GetTicks() - TicksLastFrame) / 1000.0f;
+
+	TicksLastFrame = SDL_GetTicks();
+
+	movePlayer(DeltaTime);
+	castAllRays();
+}
+
+/**
+ * render - calls all functions needed for on-screen rendering
+ *
+*/
+
+void render_game(void)
+{
+	clearColorBuffer(0xFF000000);
+
+	renderWall();
+
+	renderMap();
+	renderRays();
+	renderPlayer();
+
+	renderColorBuffer();
+}
+
+/**
+ * Destroy - free wall textures and destroy window
+ *
+*/
+void destroy_game(void)
+{
+	freeWallTextures();
+	destroyWindow();
+}
+
+/**
+ * main - main function
+ * Return: 0
+*/
+
 int main(void)
 {
-	SDL_Instance instance;
+	GameRunning = initializeWindow();
 
-	if (init_instance(&instance) != 0)
-		return (1);
+	setup_game();
 
-	/* Game loop */
-	while (1)
+	while (GameRunning)
 	{
-		SDL_SetRenderDrawColor(instance.renderer, 0, 0, 0, 0);
-		SDL_RenderClear(instance.renderer);
-		if (poll_events() == 1)
-			break;
-		/*
-		   Draw some stuff here
-		*/
-		draw_RayCaster(&instance);
-		SDL_RenderPresent(instance.renderer);
+		handleInput();
+		update_game();
+		render_game();
 	}
-	SDL_DestroyRenderer(instance.renderer);
-	SDL_DestroyWindow(instance.window);
-	SDL_Quit();
+	destroy_game();
 	return (0);
 }
